@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Bubble Wash</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">  
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+    <style>
+    
+        .order-container {
+            background-color: white;
+            width: 100%;
+            max-width: 1200px;
+            padding: 40px;
+            border-radius: 8px;
+            margin: 30px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .order-header h2 {
+            margin: 0;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .order-header .status {
+            background-color: #FEA116;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+
+        .status-tracker {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .status-tracker .step {
+            text-align: center;
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .status-tracker .step:not(:last-child):after {
+            content: "";
+            position: absolute;
+            top: 10px;
+            right: -50%;
+            width: 100%;
+            height: 2px;
+            background-color: #dcdcdc;
+            z-index: -1;
+        }
+
+        .status-tracker .step.active:after {
+            background-color: #0F172B;
+        }
+
+        .status-tracker .circle {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #dcdcdc;
+            margin: 0 auto 10px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 15px;
+        }
+
+        .status-tracker .step.active .circle {
+            background-color: #FEA116;
+        }
+
+        .order-info {
+            margin-bottom: 30px;
+        }
+
+        .order-info .info-item {
+            margin-bottom: 15px;
+        }
+
+        .order-info .info-item label {
+            font-weight: bold;
+            font-size: 14px;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .order-info .info-item input, .order-info .info-item a {
+            font-size: 14px;
+            color: #0F172B;
+            text-decoration: none;
+        }
+
+        .order-info .info-item input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            color: #333;
+            background-color: #f9f9f9;
+            box-sizing: border-box;
+        }
+
+        .item-list {
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        .item-list .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .item-list .item img {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .item-list .item-info {
+            flex-grow: 1;
+            margin-left: 15px;
+        }
+
+        .item-list .item-info h4 {
+            margin: 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .item-list .item-info span {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .item-list .price {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .total {
+            text-align: right;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-xxl bg-white p-0">
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+
+        <!-- Header Start -->
+        <div class="container-fluid bg-dark px-0">
+            <div class="row gx-0">
+                <div class="col-lg-3 bg-dark d-none d-lg-block">
+                    <a href="index.html" class="navbar-brand w-100 h-100 m-0 p-0 d-flex align-items-center justify-content-center">
+                        <h1 class="m-0 text-primary text-uppercase">BW</h1>
+                    </a>
+                </div>
+                <div class="col-lg-9">
+                    <div class="row gx-0 bg-white d-none d-lg-flex">
+                        <div class="col-lg-7 px-5 text-start">
+                            <div class="h-100 d-inline-flex align-items-center py-2 me-4">
+                                <i class="fa fa-envelope text-primary me-2"></i>
+                                <p class="mb-0">info@bubbleWash.com</p>
+                            </div>
+                            <div class="h-100 d-inline-flex align-items-center py-2">
+                                <i class="fa fa-phone-alt text-primary me-2"></i>
+                                <p class="mb-0">+6212 345 6789</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 px-5 text-end">
+                            <div class="d-inline-flex align-items-center py-2">
+                                <a class="me-3" href=""><i class="fab fa-facebook-f"></i></a>
+                                <a class="me-3" href=""><i class="fab fa-twitter"></i></a>
+                                <a class="me-3" href=""><i class="fab fa-linkedin-in"></i></a>
+                                <a class="me-3" href=""><i class="fab fa-instagram"></i></a>
+                                <a class="" href=""><i class="fab fa-youtube"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <nav class="navbar navbar-expand-lg bg-dark navbar-dark p-3 p-lg-0">
+                        <a href="index.html" class="navbar-brand d-block d-lg-none">
+                            <h1 class="m-0 text-primary text-uppercase">Bubble Wash</h1>
+                        </a>
+                        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                            <div class="navbar-nav mr-auto py-0">
+                                <a href="index.html" class="nav-item nav-link">Home</a>
+                                <a href="about.html" class="nav-item nav-link">About</a>
+                                <!-- <a href="service.html" class="nav-item nav-link">Services</a> -->
+                                <a href="room.html" class="nav-item nav-link">Services</a>
+                                <a href="status.html" class="nav-item nav-link active">Order Status</a>
+                                <!-- <div class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                                    <div class="dropdown-menu rounded-0 m-0">
+                                        <a href="booking.html" class="dropdown-item">Booking</a>
+                                        <a href="status.html" class="dropdown-item">Order Status</a>
+                                    </div>
+                                </div> -->
+                                <a href="contact.html" class="nav-item nav-link">Contact</a>
+                            </div>
+                            <a href="https://htmlcodex.com/hotel-html-template-pro" class="btn btn-primary rounded-0 py-4 px-md-5 d-none d-lg-block">Profile<i class="fa fa-arrow-right ms-3"></i></a>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <!-- Header End -->
+
+
+
+        <!-- Page Header Start -->
+        <div class="container-fluid page-header mb-5 p-0" style="background-image: url(img/carousel-2.jpeg);">
+            <div class="container-fluid page-header-inner py-5">
+                <div class="container text-center pb-5">
+                    <h1 class="display-3 text-white mb-3 animated slideInDown">Order Status</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center text-uppercase">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#">Pages</a></li>
+                            <li class="breadcrumb-item text-white active" aria-current="page">Contact</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <!-- Page Header End -->
+
+        <!-- Order Status-->
+        <div class="order-container">
+            <div class="order-header">
+                <h2>Order Details #A23D4587</h2>
+                <div class="status">SHIPPING</div>
+            </div>
+    
+            <div class="status-tracker">
+                <div class="step active">
+                    <div class="circle">1</div>
+                    <div>Order Confirmed</div>
+                    <small>8:00 AM, Feb 8, 2023</small>
+                </div>
+                <div class="step active">
+                    <div class="circle">2</div>
+                    <div>Pick Up</div>
+                </div>
+                <div class="step active">
+                    <div class="circle">3</div>
+                    <div>Proses</div>
+                    <!-- <small>Estimated date: Feb 15, 2023</small> -->
+                </div>
+                <div class="step">
+                    <div class="circle">4</div>
+                    <div>To Deliver</div>
+                    <!-- <small>8:00 AM, Feb 8, 2023</small> -->
+                </div>
+                <div class="step">
+                    <div class="circle">5</div>
+                    <div>Payment</div>
+                </div>
+                <div class="step">
+                    <div class="circle">6</div>
+                    <div>Delivered</div>
+                    <!-- <small>Estimated date: Feb 15, 2023</small> -->
+                </div>
+            </div>
+    
+            <div class="order-info">
+                <div class="info-item">
+                    <label>Courier Name</label>
+                    <input type="text" value="Bambang Santosa" readonly>
+                </div>
+                <div class="info-item">
+                    <label>Tracking Number</label>
+                    <input type="text" value="SSA4569AEF4592" readonly>
+                </div>
+                <div class="info-item">
+                    <label>Shipment Tracking URL</label>
+                    <a href="#">Track your shipment</a>
+                </div>
+            </div>
+    
+            <div class="item-list">
+                <div class="item">
+                    <img src="img/laundry-2.jpeg" alt="Image">
+                    <div class="item-info">
+                        <h4>Cuci Basah</h4>
+                        <span>1x Cuci Basah</span>
+                    </div>
+                    <div class="price">Rp. 10.000</div>
+                </div>
+                <div class="item">
+                    <img src="img/laundry-3.jpeg" alt="Product Image">
+                    <div class="item-info">
+                        <h4>Setrika Saja</h4>
+                        <span>1x Setrika Saja</span>
+                    </div>
+                    <div class="price">Rp. 8000</div>
+                </div>
+            </div>
+    
+            <div class="total">
+                Total: Rp. 18.000
+            </div>
+        </div>
+        <!--Order Status End-->
+
+        <!-- Footer Start -->
+        <div class="container-fluid bg-dark text-light footer wow fadeIn" data-wow-delay="0.1s">
+            <div class="container pb-5">
+                <div class="row g-5">
+                    <div class="col-md-6 col-lg-4">
+                        <div class="bg-primary rounded p-4">
+                            <a href="index.html"><h1 class="text-white text-uppercase mb-3">Laundry</h1></a>
+                            <p class="text-white mb-0">
+								Website ini menyediakan berbagai layanan mengenai layanan laundry serta layanan penjemputan dan pengantaran
+							</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <h6 class="section-title text-start text-primary text-uppercase mb-4">Contact</h6>
+                        <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, Malang, Indonesia</p>
+                        <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
+                        <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@bubblewash.com</p>
+                        <div class="d-flex pt-2">
+                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
+                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-md-12">
+                        <div class="row gy-5 g-4">
+                            <div class="col-md-6">
+                                <h6 class="section-title text-start text-primary text-uppercase mb-4">Company</h6>
+                                <a class="btn btn-link" href="about.html">About Us</a>
+                                <a class="btn btn-link" href="room.html">Services</a>
+                                <a class="btn btn-link" href="booking.html">Booking</a>
+                                <a class="btn btn-link" href="status.html">Order Status</a>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="section-title text-start text-primary text-uppercase mb-4">Services</h6>
+                                <a class="btn btn-link" href="service.html">Cuci Basah</a>
+                                <a class="btn btn-link" href="service.html">Cuci Kering</a>
+                                <a class="btn btn-link" href="service.html">Setrika Saja</a>
+                                <a class="btn btn-link" href="service.html">Cuci Kering Stika</a>
+                                <a class="btn btn-link" href="service.html">Dry Cleaning</a>
+                                <a class="btn btn-link" href="service.html">Karpet</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="copyright">
+                    <div class="row">
+                        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                            &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved. 
+							
+							<!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+							Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
+                        </div>
+                        <div class="col-md-6 text-center text-md-end">
+                            <div class="footer-menu">
+                                <a href="">Home</a>
+                                <a href="">Cookies</a>
+                                <a href="">Help</a>
+                                <a href="">FQAs</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer End -->
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/counterup/counterup.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/tempusdominus/js/moment.min.js"></script>
+    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+</body>
+
+</html>
